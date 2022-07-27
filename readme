@@ -1,0 +1,4 @@
+Copy and paste the following file: default into the following folder location: /nextcloud/data/appdata/nginx/
+Afterwards it should look like: /nextcloud/data/appdata/nginx/default
+
+Next set the traefik loadbalancer port to: 80
