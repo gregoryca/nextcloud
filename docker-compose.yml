@@ -1,12 +1,55 @@
 version: '3.3'
 
 services:
+  mariadb:
+      container_name: mariadb.nextcloud
+      image: mariadb:latest
+      restart: always
+      environment:
+        # ALLOW_EMPTY_PASSWORD is recommended only for development.
+        - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+        - MARIADB_USER=a-grcr
+        - MARIADB_DATABASE=nextcloud_db
+      volumes:
+        - ./data/mariadb:/var/lib/mysql
+      networks: 
+        - db
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin.nextcloud
+      #link to the mariadb database. This is required for a connection
+      links:
+        - mariadb
+      environment:
+        PMA_HOST: mariadb
+        PMA_PORT: 3306
+      restart: always
+      depends_on:
+        - mariadb
+      networks: 
+        - db
+        - web-secure
+      labels:
+        # enable traefik labels
+        - "traefik.enable=true"
+
+        - "traefik.http.routers.phpmyadmindev.rule=Host(`phpmyadmin.cloud-migrations.nl`)"
+        - "traefik.http.routers.phpmyadmindev.entrypoints=web-secure"
+        - "traefik.http.routers.phpmyadmindev.tls.certresolver=production"
+        - "traefik.http.routers.phpmyadmindev.tls=true"
+        - "traefik.http.services.phpmyadmindev.loadbalancer.server.port=80" #port to the webservice
+
+        - "traefik.http.routers.phpmyadmindev.middlewares=authelia-secure@docker"
+
   app:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
+    links:
+        - mariadb
     restart: always
     volumes:
-      - ./data/appdata:/config
+      - ./data/nextcloud:/config
       - /nextcloud-data:/data
     environment:
       - PUID=1000
@@ -14,6 +57,7 @@ services:
       - TZ=Europe/London
     networks:
       - web-secure
+      - db
 
     labels:
        - "traefik.enable=true"
@@ -44,4 +88,6 @@ services:
 
 networks:
   web-secure:
+    external: true
+  db:
     external: true
