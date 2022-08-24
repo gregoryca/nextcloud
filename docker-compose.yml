@@ -40,7 +40,7 @@ services:
         - "traefik.http.routers.phpmyadmindev.tls=true"
         - "traefik.http.services.phpmyadmindev.loadbalancer.server.port=80" #port to the webservice
 
-        - "traefik.http.routers.phpmyadmindev.middlewares=authelia-secure@docker"
+        - "traefik.http.routers.phpmyadmindev.middlewares=real-ip-foo@file, authelia-secure@docker"
 
   app:
     image: lscr.io/linuxserver/nextcloud:latest
@@ -82,7 +82,7 @@ services:
        - traefik.http.middlewares.nextcloud_redirect2.redirectregex.regex=https://(.*)/.well-known/nodeinfo
        - traefik.http.middlewares.nextcloud_redirect2.redirectregex.replacement=https://$${1}/.well-known/nodeinfo
 
-       - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker"
+       - "traefik.http.routers.nextcloud-secure.middlewares=real-ip-foo@file, nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker"
 
        - "traefik.http.services.nextcloud-secure.loadbalancer.server.port=80" #port to the webservice
 
