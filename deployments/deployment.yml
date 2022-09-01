@@ -37,7 +37,7 @@
   - name: copy Docker Compose files to remote server
     copy:
       src: /temp/nextcloud/configurations/default
-      dest: /home/gregory/srv/nextcloud/data/nextcloud/nginx/sites-confs/default
+      dest: /home/gregory/srv/nextcloud/data/nextcloud/nginx/site-confs/default
       remote_src: yes
     loop:
     - default
