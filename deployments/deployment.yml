@@ -1,0 +1,49 @@
+---
+- hosts: server17a
+  become: yes
+  tasks:
+
+  #Creating a directory on the host
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /temp/nextcloud
+      state: directory
+      mode: '0777'
+
+  #Checkout the Traefik Repo
+  - name: Git Checkout Traefik
+    ansible.builtin.git:
+      repo: 'https://github.com/gregoryca/nextcloud.git'
+      dest: /temp/traefik
+
+  #Copy the compose file
+  - name: copy Docker Compose files to remote server
+    copy:
+      src: /temp/nextcloud/docker-compose.yml
+      dest: /home/gregory/srv/nextcloud/
+    loop:
+    - docker-compose.yml
+
+  #Copy the static config file
+  - name: copy config nginx files to remote server
+    copy:
+      src: /temp/nextcloud/configurations/default
+      dest: /home/gregory/srv/nextcloud/data/nextcloud/nginx/sites-confs/default
+    loop:
+    - default
+
+  #Copy the dynamic config file
+  - name: copy config traefik files to remote server
+    copy:
+      src: /temp/traefik/configurations/config.php
+      dest: /home/gregory/srv/nextcloud/data/nextcloud/www/nextcloud/config/config.php
+    loop:
+    - config.php
+
+  #deploy compose file
+  - name: deploy Docker Compose stack on remote server
+    docker_compose:
+      project_src: /home/gregory/srv/nextcloud/
+      files:
+      - docker-compose.yml
+      recreate: always
