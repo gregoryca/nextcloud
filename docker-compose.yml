@@ -51,6 +51,7 @@ services:
     volumes:
       - ./data/nextcloud:/config
       - /nextcloud-data:/data
+      - ./log/nextcloud:/log
     environment:
       - PUID=1000
       - PGID=1000
