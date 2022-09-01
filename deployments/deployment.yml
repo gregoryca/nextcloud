@@ -10,11 +10,11 @@
       state: directory
       mode: '0777'
 
-  #Checkout the Traefik Repo
+  #Checkout the Nextcloud Repo
   - name: Git Checkout Nextcloud
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/nextcloud.git'
-      dest: /temp/nextcloud/
+      dest: /temp/nextcloud
 
   #Copy the compose file
   - name: copy Docker Compose files to remote server
