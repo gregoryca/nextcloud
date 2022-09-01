@@ -6,7 +6,7 @@
   #Creating a directory on the host
   - name: Create a directory if it does not exist
     ansible.builtin.file:
-      path: /temp/nextcloud
+      path: /temp/nextcloud/
       state: directory
       mode: '0777'
 
@@ -14,7 +14,7 @@
   - name: Git Checkout Traefik
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/nextcloud.git'
-      dest: /temp/traefik
+      dest: /temp/nextcloud/
 
   #Copy the compose file
   - name: copy Docker Compose files to remote server
