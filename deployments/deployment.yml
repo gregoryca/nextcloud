@@ -11,7 +11,7 @@
       mode: '0777'
 
   #Checkout the Traefik Repo
-  - name: Git Checkout Traefik
+  - name: Git Checkout Nextcloud
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/nextcloud.git'
       dest: /temp/nextcloud/
