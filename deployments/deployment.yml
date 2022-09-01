@@ -14,7 +14,7 @@
   - name: Git Checkout Nextcloud
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/nextcloud.git'
-      dest: /temp/nextcloud
+      dest: /temp/nextcloud/
 
   #Copy the compose file
   - name: copy Docker Compose files to remote server
@@ -35,7 +35,7 @@
   #Copy the dynamic config file
   - name: copy config traefik files to remote server
     copy:
-      src: /temp/traefik/configurations/config.php
+      src: /temp/nextcloud/configurations/config.php
       dest: /home/gregory/srv/nextcloud/data/nextcloud/www/nextcloud/config/config.php
     loop:
     - config.php
