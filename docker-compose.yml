@@ -13,7 +13,7 @@ services:
       volumes:
         - ./data/mariadb:/var/lib/mysql
       networks: 
-        - db
+        - nextcloud
 
   # phpmyadmin:
   #     image: phpmyadmin/phpmyadmin
@@ -57,7 +57,7 @@ services:
       - TZ=Europe/London
     networks:
       - web-secure
-      - db
+      - nextcloud
 
     labels:
        - "traefik.enable=true"
