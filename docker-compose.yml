@@ -89,5 +89,5 @@ services:
 networks:
   web-secure:
     external: true
-  db:
+  nextcloud:
     external: true
