@@ -58,6 +58,8 @@ services:
     networks:
       - web-secure
       - nextcloud
+    depends_on:
+      - mariadb
 
     labels:
        - "traefik.enable=true"
