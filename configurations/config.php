@@ -9,7 +9,7 @@ $CONFIG = array (
   array (
     0 => 'cloud.cloud-migrations.nl',
   ),
-  'filelocking.enabled' => false,
+  'filelocking.enabled' => true,
   'dbtype' => 'mysql',
   'version' => '24.0.3.2',
   'overwrite.cli.url' => 'https://cloud.cloud-migrations.nl',
