@@ -34,7 +34,7 @@ services:
         # enable traefik labels
         - "traefik.enable=true"
 
-        - "traefik.http.routers.phpmyadmindev.rule=Host(`phpmyadmin.cloud-migrations.nl`)"
+        - "traefik.http.routers.phpmyadmindev.rule=Host(`phpmyadmin.apex-migrations.net`)"
         - "traefik.http.routers.phpmyadmindev.entrypoints=web-secure"
         - "traefik.http.routers.phpmyadmindev.tls.certresolver=production"
         - "traefik.http.routers.phpmyadmindev.tls=true"
@@ -65,13 +65,13 @@ services:
        - "traefik.enable=true"
 
        # web interface
-       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.cloud-migrations.nl`)"
+       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.apex-migrations.net`)"
        - "traefik.http.routers.nextcloud-secure.tls.certresolver=production"
        - "traefik.http.routers.nextcloud-secure.tls=true"
        - "traefik.http.routers.nextcloud-secure.entrypoints=web-secure"
 
-       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.cloud-migrations.nl
-       - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.cloud-migrations.nl *.cloud.cloud-migrations.nl
+       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
+       - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
        - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
        - traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true
        - traefik.http.middlewares.nextcloud.headers.stsPreload=true
