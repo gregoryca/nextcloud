@@ -2,3 +2,5 @@ Copy and paste the following file: default into the following folder location: /
 Afterwards it should look like: /nextcloud/data/appdata/nginx/default
 
 Next set the traefik loadbalancer port to: 80
+
+If the necessary secrets are defined, you could also do a Ansible deployment of the Nextcloud Docker stack.
