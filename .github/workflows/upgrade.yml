@@ -4,8 +4,9 @@
 name: Upgrade Nextcloud infra
 
 on:
-  pull_request:
-    branches: [ "master" ]
+  push:
+    branches:
+      - upgrade
 
   #################################################################
   # Allows you to run this workflow manually from the Actions tab #
