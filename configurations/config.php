@@ -7,7 +7,9 @@ $CONFIG = array (
   'secret' => 'UBYgVYhqP4SPk5vs4oim5kTouH7zKo5fEEZ6clLv+Q1nnFy0',
   'trusted_domains' => 
   array (
-    0 => 'cloud.cloud-migrations.nl',
+    0 => 'cloud.apex-migrations.net',
+    1 => 'auth.apex-migrations.net',
+    2 => 'dashboard.apex-migrations.net',
   ),
   'filelocking.enabled' => true,
   'dbtype' => 'mysql',
