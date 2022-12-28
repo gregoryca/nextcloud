@@ -1,1 +1,3 @@
 /data
+deployments/ansible.cfg
+deployments/inventory
