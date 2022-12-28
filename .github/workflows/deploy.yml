@@ -4,8 +4,9 @@
 name: Deploy Nextcloud infra
 
 on:
-  pull_request:
-    branches: [ "master" ]
+  push:
+    branches:
+      - master
 
   #################################################################
   # Allows you to run this workflow manually from the Actions tab #
