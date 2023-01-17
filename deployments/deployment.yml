@@ -1,8 +1,7 @@
 ---
 - hosts: all
-  become: yes
   become_user: gregory
-  gather_facts: True
+  become: yes
   tasks:
   
   ####################################
@@ -32,25 +31,16 @@
       remote_src: yes
     loop:
     - docker-compose.yml
-      
-  # #######################
-  # # Copy the nginx file #
-  # #######################
-  # - name: copy Docker Compose files to remote server
-  #   copy:
-  #     src: ~/temp/nextcloud/configurations/default
-  #     dest: ~/srv/nextcloud/data/nextcloud/nginx/site-confs/default
-  #     remote_src: yes
-  #   loop:
-  #   - default
     
-  #######################
-  # Copy the nginx file #
-  #######################
-  - name: copy Docker Compose files to remote server
+  ########################
+  # Copy the config file #
+  ########################
+  - name: copy Nextcloud config file to remote server
+    become: yes
+    become_user: root
     copy:
-      src: ~/temp/nextcloud/configurations/config.php
-      dest: ~/srv/nextcloud/nextcloud/config/config.php
+      src: /home/gregory/temp/nextcloud/configurations/config.php
+      dest: /home/gregory/srv/nextcloud/nextcloud/config/config.php
       remote_src: yes
     loop:
     - config.php

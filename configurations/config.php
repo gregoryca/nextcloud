@@ -13,7 +13,7 @@ $CONFIG = array (
     3 => '192.168.2.1',
     4 => '192.168.2.105',
   ),
-  'filelocking.enabled' => false,
+  'filelocking.enabled' => enabled,
   'dbtype' => 'mysql',
   'version' => '25.0.2.3',
   'overwrite.cli.url' => 'https://cloud.apex-migrations.net',
