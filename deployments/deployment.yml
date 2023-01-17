@@ -33,16 +33,16 @@
     loop:
     - docker-compose.yml
       
-  #######################
-  # Copy the nginx file #
-  #######################
-  - name: copy Docker Compose files to remote server
-    copy:
-      src: ~/temp/nextcloud/configurations/default
-      dest: ~/srv/nextcloud/data/nextcloud/nginx/site-confs/default
-      remote_src: yes
-    loop:
-    - default
+  # #######################
+  # # Copy the nginx file #
+  # #######################
+  # - name: copy Docker Compose files to remote server
+  #   copy:
+  #     src: ~/temp/nextcloud/configurations/default
+  #     dest: ~/srv/nextcloud/data/nextcloud/nginx/site-confs/default
+  #     remote_src: yes
+  #   loop:
+  #   - default
     
   #######################
   # Copy the nginx file #
@@ -50,7 +50,7 @@
   - name: copy Docker Compose files to remote server
     copy:
       src: ~/temp/nextcloud/configurations/config.php
-      dest: ~/srv/nextcloud/data/nextcloud/www/nextcloud/config/config.php
+      dest: ~/srv/nextcloud/nextcloud/config/config.php
       remote_src: yes
     loop:
     - config.php

@@ -15,7 +15,7 @@ $CONFIG = array (
   ),
   'filelocking.enabled' => false,
   'dbtype' => 'mysql',
-  'version' => '24.0.3.2',
+  'version' => '25.0.2.3',
   'overwrite.cli.url' => 'https://cloud.apex-migrations.net',
   'dbname' => 'nextcloud_db',
   'dbhost' => 'mariadb',
@@ -26,7 +26,7 @@ $CONFIG = array (
   'dbpassword' => '5HAfsfSiYnZWjOzWwc0jiBjTSlIukk',
   'installed' => true,
   'theme' => '',
-  'loglevel' => 2,
+  'loglevel' => 0,
   'maintenance' => false,
   'has_rebuilt_cache' => true,
   'mail_from_address' => 'cloud',
@@ -38,6 +38,29 @@ $CONFIG = array (
   'mail_smtpport' => '465',
   'mail_smtpsecure' => 'ssl',
   'mail_smtpauth' => 1,
-  'mail_smtpname' => 'nextcloud@cloud-migrations.nl',
+  'mail_smtpname' => 'nextcloud@apex-migrations.net',
   'mail_smtppassword' => 'Laliloe4life',
+  'updater.secret' => '$2y$10$lggjxCuXhyYLuSun4VBXXenQ89ygUBIwW/OtX5888t5RPbxV9t2Au',
+  'htaccess.RewriteBase' => '/',
+  'apps_paths' => 
+  array (
+    0 => 
+    array (
+      'path' => '/var/www/html/apps',
+      'url' => '/apps',
+      'writable' => false,
+    ),
+    1 => 
+    array (
+      'path' => '/var/www/html/custom_apps',
+      'url' => '/custom_apps',
+      'writable' => true,
+    ),
+  ),
+  'app_install_overwrite' => 
+  array (
+    0 => 'duplicatefinder',
+    1 => 'occweb',
+    2 => 'caniupdate',
+  ),
 );
