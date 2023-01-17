@@ -18,13 +18,13 @@
   #Removing/Deleting Image
     - name: Remove image
       docker_image:
-        name: lscr.io/linuxserver/nextcloud:latest
+        name: nextcloud:latest
         state: absent
 
   #Pull latest version Image
     - name: pull an image
       docker_image:
-        name: lscr.io/linuxserver/nextcloud:latest
+        name: nextcloud:latest
         source: pull
 
   #deploy compose file
