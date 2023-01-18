@@ -1,8 +1,33 @@
+create a ansible.cfg in: /deployments/
+The contents of the ansible.cfg are as following:
+
+[defaults]
+
+inventory = inventory
+
+host_key_checking = true
+
+Next you'll need a inventory file so ansible knows how to connect to your infra for proivisioning.
+The contents of the inventory file are as follow:
+
+[name group]
+server name ansible_host=ipaddress ansible_port=port
+
+[group name:vars]
+more details follow soon !
+
+
+
+
+
+
+
+
+
+
+
 Ignore this readme, still needs to updated to reflect the official nextcloud docker image instead of: Linuxserver.io
 
-Copy and paste the following file: default into the following folder location: /nextcloud/data/appdata/nginx/
-Afterwards it should look like: /nextcloud/data/appdata/nginx/default
-
-Next set the traefik loadbalancer port to: 80
+Make sure you define a config.php file for nextcloud like so: https://help.nextcloud.com/uploads/default/original/2X/9/9d28662b6e5090c46a48e034b66f214904738e6b.png
 
 If the necessary secrets are defined, you could also do a Ansible deployment of the Nextcloud Docker stack.
