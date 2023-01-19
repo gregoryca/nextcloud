@@ -7,12 +7,13 @@ $CONFIG = array (
   'secret' => 'UBYgVYhqP4SPk5vs4oim5kTouH7zKo5fEEZ6clLv+Q1nnFy0',
   'trusted_domains' => 
   array (
-    0 => 'apex-migrations.hoptop.org',
+    0 => 'localhost',
     1 => 'auth.apex-migrations.net',
     2 => 'dashboard.apex-migrations.net',
     3 => '192.168.2.100',
     4 => '77.173.242.71',
-    5 => '172.21.0.0/16'
+    5 => '172.21.0.0/16',
+    6 => 'apex-migrations.hoptop.org',
   ),
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
