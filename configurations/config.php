@@ -19,6 +19,7 @@ $CONFIG = array (
   'dbtype' => 'mysql',
   'version' => '25.0.2.3',
   'overwrite.cli.url' => 'https://cloud.apex-migrations.net',
+  'overwriteprotocol' => 'https',
   'dbname' => 'nextcloud_db',
   'dbhost' => 'mariadb',
   'dbport' => '5432',
