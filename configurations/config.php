@@ -7,7 +7,7 @@ $CONFIG = array (
   'secret' => 'UBYgVYhqP4SPk5vs4oim5kTouH7zKo5fEEZ6clLv+Q1nnFy0',
   'trusted_domains' => 
   array (
-    0 => 'cloud.apex-migrations.net',
+    0 => 'apex-migrations.hoptop.org',
     1 => 'auth.apex-migrations.net',
     2 => 'dashboard.apex-migrations.net',
     3 => '192.168.2.100',
