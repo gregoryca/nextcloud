@@ -66,26 +66,23 @@ services:
        - "traefik.enable=true"
 
        # web interface
-       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.apex-migrations.net`)"
+       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.apex-migrations.net/apps/dashboard`)"
        - "traefik.http.routers.nextcloud-secure.tls.certresolver=production"
        - "traefik.http.routers.nextcloud-secure.tls=true"
        - "traefik.http.routers.nextcloud-secure.entrypoints=web-secure"
 
-       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
+       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net/apps/dashboard
        - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
        - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
        - traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true
        - traefik.http.middlewares.nextcloud.headers.stsPreload=true
        - traefik.http.middlewares.nextcloud.headers.customresponseheaders.X-Frame-Options=SAMEORIGIN
-       - traefik.http.middlewares.nextcloud_redirect.redirectregex.permanent=true
-       - traefik.http.middlewares.nextcloud_redirect.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav
-       - traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement=https://$${1}/remote.php/dav/
-       - traefik.http.middlewares.nextcloud_redirect1.redirectregex.regex=https://(.*)/.well-known/webfinger
-       - traefik.http.middlewares.nextcloud_redirect1.redirectregex.replacement=https://$${1}/.well-known/webfinger
-       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.regex=https://(.*)/.well-known/nodeinfo
-       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.replacement=https://$${1}/.well-known/nodeinfo
+       - traefik.http.routers.nextcloud.middlewares='nextcloud_redirectregex'
+       - traefik.http.middlewares.nextcloud_redirectregex.redirectregex.permanent=true
+       - traefik.http.middlewares.nextcloud_redirectregex.redirectregex.regex='https://(.*)/.well-known/(?:card|cal)dav'
+       - traefik.http.middlewares.nextcloud_redirectregex.redirectregex.replacement='https://$${1}/remote.php/dav'
 
-       - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker"
+       - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirectregex@docker"
 
        - "traefik.http.services.nextcloud-secure.loadbalancer.server.port=80" #port to the webservice
 
