@@ -10,10 +10,8 @@ $CONFIG = array (
     0 => 'cloud.apex-migrations.net',
     1 => 'auth.apex-migrations.net',
     2 => 'dashboard.apex-migrations.net',
-    3 => '192.168.2.100',
-    4 => '77.173.242.71',
-    5 => '172.21.0.0/16'
   ),
+  'trusted_proxies' => ['77.173.242.71', '172.21.0.0/16', '192.168.2.100/24'],
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
   'dbtype' => 'mysql',
