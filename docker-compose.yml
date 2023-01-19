@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   mariadb:
-      container_name: mariadb.nextcloud
+      container_name: nextcloud.mariadb
       image: mariadb:latest
       restart: always
       environment:
@@ -17,7 +17,7 @@ services:
 
   phpmyadmin:
       image: phpmyadmin/phpmyadmin
-      container_name: phpmyadmin.nextcloud
+      container_name: nextcloud.phpmyadmin
       #link to the mariadb database. This is required for a connection
       links:
         - mariadb
@@ -88,6 +88,18 @@ services:
        - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker"
 
        - "traefik.http.services.nextcloud-secure.loadbalancer.server.port=80" #port to the webservice
+
+  cron:
+    container_name: nextcloud.cronjobs
+    image: nextcloud:apache
+    restart: always
+    volumes:
+      - ./nextcloud/:/var/www/html:rw
+      - /nextcloud-data:/data:rw
+    entrypoint: /cron.sh
+    networks:
+      - web-secure
+      - nextcloud
 
 networks:
   web-secure:

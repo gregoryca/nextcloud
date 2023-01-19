@@ -14,6 +14,7 @@ $CONFIG = array (
     4 => '192.168.2.105',
   ),
   'filelocking.enabled' => true,
+  'default_phone_region' => '+31',
   'dbtype' => 'mysql',
   'version' => '25.0.2.3',
   'overwrite.cli.url' => 'https://cloud.apex-migrations.net',
