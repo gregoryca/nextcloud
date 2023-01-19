@@ -10,8 +10,9 @@ $CONFIG = array (
     0 => 'cloud.apex-migrations.net',
     1 => 'auth.apex-migrations.net',
     2 => 'dashboard.apex-migrations.net',
-    3 => '192.168.2.1',
+    3 => '192.168.2.100',
     4 => '192.168.2.105',
+    5 => '172.21.0.0/16'
   ),
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
