@@ -9,7 +9,7 @@ $CONFIG = array (
   array (
     0 => 'localhost',
     1 => '77.173.242.71',
-    2 => 'apex-migrations.hoptop.org',
+    2 => 'apex-migrations.hopto.org',
   ),
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
