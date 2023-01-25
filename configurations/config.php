@@ -11,11 +11,16 @@ $CONFIG = array (
     1 => 'auth.apex-migrations.net',
     2 => 'dashboard.apex-migrations.net',
   ),
-  'trusted_proxies' => ['77.173.242.71', '172.21.0.0/16', '192.168.2.100/24'],
+  'trusted_proxies' => 
+  array (
+    0 => '77.173.242.71',
+    1 => '172.21.0.0/16',
+    2 => '192.168.2.100/24',
+  ),
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
   'dbtype' => 'mysql',
-  'version' => '25.0.2.3',
+  'version' => '25.0.3.2',
   'overwrite.cli.url' => 'https://cloud.apex-migrations.net',
   'overwriteprotocol' => 'https',
   'dbname' => 'nextcloud_db',
