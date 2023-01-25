@@ -7,7 +7,8 @@ on:
   push:
     branches-ignore: [master, main]
   pull_request:
-    branches: [ dev, development ]
+    types:
+      - opened
 
   workflow_dispatch:
 
