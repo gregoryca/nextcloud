@@ -14,6 +14,8 @@ The contents of the inventory file are as follow:
 server name ansible_host=ipaddress ansible_port=port
 
 [group name:vars]
+
+What also is important is to create a .env file in the root directory of your docker-compose file, and add the missing details in the .env file.
 more details follow soon !
 
 
