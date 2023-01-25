@@ -52,3 +52,4 @@ jobs:
           body: Redeploy infra with new code by creating a pull reqeust on Master branch
           branch: development
           base: master
+          token: ${{ secrets.GITHUB_TOKEN }}
