@@ -1,0 +1,111 @@
+version: '3.3'
+
+services:
+  mariadb:
+      container_name: nextcloud.mariadb
+      image: mariadb:latest
+      restart: always
+      environment:
+        # ALLOW_EMPTY_PASSWORD is recommended only for development.
+        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+        MARIADB_USER: ${MARIADB_USER}
+        MARIADB_DATABASE: ${MARIADB_DATABASE}
+      volumes:
+        - ./data/mariadb:/var/lib/mysql
+      networks: 
+        - nextcloud
+        - monitoring-stack
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: nextcloud.phpmyadmin
+      #link to the mariadb database. This is required for a connection
+      links:
+        - mariadb
+      environment:
+        PMA_HOST: ${PMA_HOST}
+        PMA_PORT: ${PMA_PORT}
+      restart: unless-stopped
+      depends_on:
+        - mariadb
+      networks: 
+        - nextcloud
+        - web-secure
+      labels:
+        # enable traefik labels
+        - "traefik.enable=true"
+
+        - "traefik.http.routers.phpmyadmindev.rule=Host(`nextclouddb.gui.apex-migrations.net`)"
+        - "traefik.http.routers.phpmyadmindev.entrypoints=web-secure"
+        - "traefik.http.routers.phpmyadmindev.tls.certresolver=production"
+        - "traefik.http.routers.phpmyadmindev.tls=true"
+        - "traefik.http.services.phpmyadmindev.loadbalancer.server.port=80" #port to the webservice
+
+        - "traefik.http.routers.phpmyadmindev.middlewares=real-ip-foo@file"
+        
+  app:
+    image: nextcloud:latest
+    container_name: nextcloud
+    links:
+        - mariadb
+    restart: always
+    volumes:
+      # - ./data/nextcloud:/config
+      - /nextcloud-data:/data:rw
+      - ./nextcloud/:/var/www/html:rw
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    networks:
+      - web-secure
+      - nextcloud
+    depends_on:
+      - mariadb
+
+    labels:
+       - "traefik.enable=true"
+
+       # web interface
+       - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.apex-migrations.net`)"
+       - "traefik.http.routers.nextcloud-secure.tls.certresolver=production"
+       - "traefik.http.routers.nextcloud-secure.tls=true"
+       - "traefik.http.routers.nextcloud-secure.entrypoints=web-secure"
+
+       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
+       - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
+       - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
+       - traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true
+       - traefik.http.middlewares.nextcloud.headers.stsPreload=true
+       - traefik.http.middlewares.nextcloud.headers.customresponseheaders.X-Frame-Options=SAMEORIGIN
+       - traefik.http.middlewares.nextcloud_redirect.redirectregex.permanent=true
+       - traefik.http.middlewares.nextcloud_redirect.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav
+       - traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement=https://$${1}/remote.php/dav/
+       - traefik.http.middlewares.nextcloud_redirect1.redirectregex.regex=https://(.*)/.well-known/webfinger
+       - traefik.http.middlewares.nextcloud_redirect1.redirectregex.replacement=https://$${1}/.well-known/webfinger
+       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.regex=https://(.*)/.well-known/nodeinfo
+       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.replacement=https://$${1}/.well-known/nodeinfo
+
+       - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker, my-redirect2https@file"
+
+       - "traefik.http.services.nextcloud-secure.loadbalancer.server.port=80" #port to the webservice
+
+  cron:
+    container_name: nextcloud.cronjobs
+    image: nextcloud:apache
+    restart: always
+    volumes:
+      - ./nextcloud/:/var/www/html:rw
+      - /nextcloud-data:/data:rw
+    entrypoint: /cron.sh
+    networks:
+      - web-secure
+      - nextcloud
+
+networks:
+  web-secure:
+    external: true
+  nextcloud:
+    external: true
+  monitoring-stack:
+    external: true
