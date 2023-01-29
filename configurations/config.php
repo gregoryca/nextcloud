@@ -17,6 +17,7 @@ $CONFIG = array (
     1 => '172.21.0.0/16',
     2 => '192.168.2.100/24',
   ),
+  'allow_url_fopen' => true,
   'filelocking.enabled' => true,
   'default_phone_region' => '+31',
   'dbtype' => 'mysql',
