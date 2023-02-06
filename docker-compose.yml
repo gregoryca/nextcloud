@@ -62,7 +62,6 @@ services:
       - nextcloud
     depends_on:
       - mariadb
-
     labels:
        - "traefik.enable=true"
 
