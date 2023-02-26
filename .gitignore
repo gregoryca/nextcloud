@@ -3,3 +3,4 @@ deployments/ansible.cfg
 deployments/inventory
 /nextcloud/
 .env
+redis/dump.rdb

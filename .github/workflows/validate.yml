@@ -4,12 +4,6 @@ name: Lint the code that has been checked in
 # pipeline triggers #
 #####################
 on:
-  push:
-    branches-ignore: [master, main]
-  pull_request:
-    types:
-      - opened
-
   workflow_dispatch:
 
 jobs:

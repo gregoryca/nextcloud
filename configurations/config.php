@@ -49,6 +49,11 @@ $CONFIG = array (
   'mail_smtppassword' => 'Laliloe4life',
   'updater.secret' => '$2y$10$lggjxCuXhyYLuSun4VBXXenQ89ygUBIwW/OtX5888t5RPbxV9t2Au',
   'htaccess.RewriteBase' => '/',
+  'redis' =>
+  array (
+    'host' => 'redis',
+    'port' => 6379,
+  ),
   'apps_paths' => 
   array (
     0 => 

@@ -1,13 +1,9 @@
 ########################################################
 # This is a basic workflow to Deploy a Nextcloud stack #
 ########################################################
-name: Deploy Nextcloud infra
+name: Deploy Nextcloud
 
 on:
-  push:
-    branches:
-      - master
-
   #################################################################
   # Allows you to run this workflow manually from the Actions tab #
   #################################################################

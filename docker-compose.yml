@@ -12,7 +12,7 @@ services:
         MARIADB_DATABASE: ${MARIADB_DATABASE}
       volumes:
         - ./data/mariadb:/var/lib/mysql
-      networks: 
+      networks:
         - nextcloud
         - monitoring-stack
 
@@ -28,7 +28,7 @@ services:
       restart: unless-stopped
       depends_on:
         - mariadb
-      networks: 
+      networks:
         - nextcloud
         - web-secure
       labels:
@@ -42,12 +42,13 @@ services:
         - "traefik.http.services.phpmyadmindev.loadbalancer.server.port=80" #port to the webservice
 
         - "traefik.http.routers.phpmyadmindev.middlewares=real-ip-foo@file, authelia-secure@docker"
-        
+
   app:
     image: nextcloud:latest
     container_name: nextcloud
     links:
         - mariadb
+        - redis
     restart: always
     volumes:
       # - ./data/nextcloud:/config
@@ -57,11 +58,15 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_HOST_PASSWORD=somepassword
     networks:
       - web-secure
       - nextcloud
     depends_on:
       - mariadb
+      - redis
     labels:
        - "traefik.enable=true"
 
@@ -97,9 +102,23 @@ services:
       - ./nextcloud/:/var/www/html:rw
       - /nextcloud-data:/data:rw
     entrypoint: /cron.sh
+    ports:
+      - 6379:6379
     networks:
       - web-secure
       - nextcloud
+
+  redis:
+    image: redis:latest
+    container_name: nextcloud.redis
+    command: "redis-server --requirepass somepassword"
+    volumes:
+      - ./redis:/data
+    networks:
+      - nextcloud
+    restart: unless-stopped
+    environment:
+      - REDIS_REPLICATION_MODE=master
 
 networks:
   web-secure:
