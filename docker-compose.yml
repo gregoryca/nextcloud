@@ -60,7 +60,7 @@ services:
       - TZ=Europe/London
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_HOST_PASSWORD=somepassword
+      - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD}
     networks:
       - web-secure
       - nextcloud
@@ -111,7 +111,7 @@ services:
   redis:
     image: redis:latest
     container_name: nextcloud.redis
-    command: "redis-server --requirepass somepassword"
+    command: "redis-server --requirepass ${REDIS_HOST_PASSWORD}"
     volumes:
       - ./redis:/data
     networks:
