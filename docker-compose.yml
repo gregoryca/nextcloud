@@ -35,7 +35,7 @@ services:
         # enable traefik labels
         - "traefik.enable=true"
 
-        - "traefik.http.routers.phpmyadmindev.rule=Host(`nextclouddb.gui.apex-migrations.net`)"
+        - "traefik.http.routers.phpmyadmindev.rule=Host(`nextclouddb.apex-migrations.net`)"
         - "traefik.http.routers.phpmyadmindev.entrypoints=web-secure"
         - "traefik.http.routers.phpmyadmindev.tls.certresolver=production"
         - "traefik.http.routers.phpmyadmindev.tls=true"
