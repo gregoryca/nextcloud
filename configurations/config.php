@@ -13,9 +13,8 @@ $CONFIG = array (
   ),
   'trusted_proxies' => 
   array (
-    0 => '77.173.242.71',
-    1 => '172.21.0.14',
-    2 => '192.168.2.100',
+    0 => '172.21.0.14',
+    1 => '192.168.2.100',
   ),
   'allow_url_fopen' => true,
   'filelocking.enabled' => true,
