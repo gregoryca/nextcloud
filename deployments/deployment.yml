@@ -21,29 +21,14 @@
       repo: 'https://github.com/gregoryca/nextcloud.git'
       dest: ~/temp/nextcloud/
 
-  #########################
-  # Copy the compose file #
-  #########################
-  - name: copy Docker Compose files to remote server
+  ######################
+  # Copy compose stack #
+  ######################
+  - name: Copy file with owner and permissions
     copy:
-      src: ~/temp/nextcloud/docker-compose.yml
+      src: ~/temp/nextcloud/
       dest: ~/srv/nextcloud/
       remote_src: yes
-    loop:
-    - docker-compose.yml
-    
-  ########################
-  # Copy the config file #
-  ########################
-  - name: copy Nextcloud config file to remote server
-    become: yes
-    become_user: root
-    copy:
-      src: /home/gregory/temp/nextcloud/configurations/config.php
-      dest: /home/gregory/srv/nextcloud/nextcloud/config/config.php
-      remote_src: yes
-    loop:
-    - config.php
     
   #######################
   # deploy compose file #
