@@ -32,3 +32,4 @@ make sure to add the user to the docker group by using the following command:
 sudo usermod -a -G docker "username"
 
 make sure to remove the doubble quotes as the command get's executed in bash
+More info can be found here: https://linuxhint.com/ubuntu-add-user-to-group/
