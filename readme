@@ -18,18 +18,17 @@ server name ansible_host=ipaddress ansible_port=port
 What also is important is to create a .env file in the root directory of your docker-compose file, and add the missing details in the .env file.
 more details follow soon !
 
-
-
-
-
-
-
-
-
-
-
 Ignore this readme, still needs to updated to reflect the official nextcloud docker image instead of: Linuxserver.io
 
 Make sure you define a config.php file for nextcloud like so: https://help.nextcloud.com/uploads/default/original/2X/9/9d28662b6e5090c46a48e034b66f214904738e6b.png
 
 If the necessary secrets are defined, you could also do a Ansible deployment of the Nextcloud Docker stack.
+
+#Error messages
+When you receive the following error:
+{"changed": false, "msg": "Error connecting: Error while fetching server API version: ('Connection aborted.', PermissionError(13, 'Permission denied'))"}
+
+make sure to add the user to the docker group by using the following command:
+sudo usermod -a -G docker "username"
+
+make sure to remove the doubble quotes as the command get's executed in bash
