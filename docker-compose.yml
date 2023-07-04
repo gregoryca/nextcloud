@@ -71,10 +71,6 @@ services:
       - "traefik.enable=true"
 
       # web interface
-      - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.apex-migrations.net`)"
-      - "traefik.http.routers.nextcloud-secure.tls.certresolver=production"
-      - "traefik.http.routers.nextcloud-secure.tls=true"
-      - "traefik.http.routers.nextcloud-secure.entrypoints=web-secure"
 
       - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
       - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
@@ -89,10 +85,6 @@ services:
       - traefik.http.middlewares.nextcloud_redirect1.redirectregex.replacement=https://$${1}/.well-known/webfinger
       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.regex=https://(.*)/.well-known/nodeinfo
       - traefik.http.middlewares.nextcloud_redirect2.redirectregex.replacement=https://$${1}/.well-known/nodeinfo
-
-      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud@docker, nextcloud_redirect@docker, nextcloud_redirect1@docker, nextcloud_redirect2@docker, my-redirect2https@file, IP2Location@file, real-ip-foo@file"
-
-      - "traefik.http.services.nextcloud-secure.loadbalancer.server.port=80" #port to the webservice
 
   cron:
     container_name: nextcloud.cronjobs
