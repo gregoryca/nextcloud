@@ -93,6 +93,7 @@ services:
     volumes:
       - ./nextcloud/:/var/www/html:rw
       - /nextcloud-data:/data:rw
+      - /usr/bin/python3/:/python3/
     entrypoint: /cron.sh
     ports:
       - 6379:6379
