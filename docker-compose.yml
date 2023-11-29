@@ -65,7 +65,7 @@ services:
       - web-secure
       - nextcloud
     dns:
-      - 192.168.2.100
+      - ${DNS_SERVER}
     depends_on:
       - mariadb
       - redis
