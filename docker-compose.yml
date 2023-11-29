@@ -102,6 +102,8 @@ services:
     networks:
       - web-secure
       - nextcloud
+    depends_on:
+      - nextcloud
 
   redis:
     image: redis:latest
