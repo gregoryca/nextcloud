@@ -43,7 +43,7 @@ services:
 
   #       - "traefik.http.routers.phpmyadmindev.middlewares=real-ip-foo@file, authelia-secure@docker"
 
-  app:
+  nextcloud:
     image: nextcloud:latest
     container_name: nextcloud
     links:
