@@ -4,3 +4,6 @@ deployments/inventory
 /nextcloud/
 .env
 redis/dump.rdb
+/nextcloud-app
+/nextcloud-config
+/nextcloud-log

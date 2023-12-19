@@ -33,3 +33,6 @@ sudo usermod -a -G docker "username"
 
 make sure to remove the doubble quotes as the command get's executed in bash
 More info can be found here: https://linuxhint.com/ubuntu-add-user-to-group/
+
+When receiving the error message: "configuration was not read or initialized correctly"
+Use the following site to troubleshoot the issue: https://help.nextcloud.com/t/configuration-was-not-read-or-initialized-correctly/152414/3
