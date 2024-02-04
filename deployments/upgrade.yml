@@ -18,19 +18,19 @@
   #Removing/Deleting Image
     - name: Remove image
       docker_image:
-        name: nextcloud:latest
+        name: nextcloud:stable
         state: absent
 
   #Pull latest version Image
     - name: pull an image
       docker_image:
-        name: nextcloud:latest
+        name: nextcloud:stable
         source: pull
 
   #deploy compose file
     - name: deploy Docker Compose stack
       docker_compose:
-        project_src: /home/gregory/srv/nextcloud/
+        project_src: ~/srv/nextcloud/
         files:
         - docker-compose.yml
         recreate: always
