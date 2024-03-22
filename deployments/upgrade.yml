@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   gather_facts: False
   tasks:
 
@@ -31,6 +31,6 @@
     - name: deploy Docker Compose stack
       docker_compose:
         project_src: ~/srv/nextcloud/
-        files:
-        - docker-compose.yml
-        recreate: always
+        build: no
+        restarted: yes
+      register: output

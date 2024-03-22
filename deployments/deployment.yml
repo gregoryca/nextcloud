@@ -33,12 +33,12 @@
   #######################
   # deploy compose file #
   #######################
-  - name: deploy Docker Compose stack on remote server
+  - name: deploy Docker Compose stack
     docker_compose:
       project_src: ~/srv/nextcloud/
-      files:
-      - docker-compose.yml
-      recreate: always
+      build: no
+      restarted: yes
+    register: output
 
   #########################################
   # Clean up temp folder after deployment #
