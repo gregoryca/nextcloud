@@ -7,6 +7,7 @@
     - name: Stop the docker container
       docker_container:
         name: nextcloud
+        image: nextcloud
         state: stopped
 
   #Removing/Deleting container
@@ -18,13 +19,13 @@
   #Removing/Deleting Image
     - name: Remove image
       docker_image:
-        name: nextcloud:stable
+        name: nextcloud:stable, nextcloud:latest
         state: absent
 
   #Pull latest version Image
     - name: pull an image
       docker_image:
-        name: nextcloud:stable
+        name: nextcloud:28.0.3
         source: pull
 
   #deploy compose file
