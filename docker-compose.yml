@@ -1,60 +1,38 @@
 services:
   mariadb:
     container_name: nextcloud.mariadb
-    image: mariadb:latest
+    image: mariadb:10.8.3
     restart: always
+    command: --skip-grant-tables
+    network_mode: host
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
+      innodb_large_prefix: true
+      innodb_file_format: barracuda
+      innodb_file_per_table: 1
     volumes:
       - ./data/mariadb:/var/lib/mysql
-    networks:
-      - nextcloud
-      - monitoring-stack
 
   nextcloud:
     image: nextcloud:latest
-    container_name: nextcloud
-    links:
-      - mariadb
+    container_name: nextcloud.ui
+    hostname: nextcloud
+    network_mode: host
     restart: always
     volumes:
-      - /nextcloud-data:/data:rw
-      - ./nextcloud-app/:/var/www/html:rw
+      - /nextcloud-data:/data
+      - ./nextcloud-app/:/var/www/html
       - ./nextcloud-log:/var/log/
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - REDIS_HOST=192.168.2.100
+      - REDIS_HOST=localhost
       - REDIS_PORT=6379
       - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD}
-    networks:
-      - web-secure
-      - nextcloud
-      - redis
-    dns:
-      - ${DNS_SERVER}
-    depends_on:
-      - mariadb
-    labels:
-      - "traefik.enable=true"
-      # web interface
-      - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
-      - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
-      - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
-      - traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true
-      - traefik.http.middlewares.nextcloud.headers.stsPreload=true
-      - traefik.http.middlewares.nextcloud.headers.customresponseheaders.X-Frame-Options=SAMEORIGIN
-      - traefik.http.middlewares.nextcloud_redirect.redirectregex.permanent=true
-      - traefik.http.middlewares.nextcloud_redirect.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav
-      - traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement=https://$${1}/remote.php/dav/
-      - traefik.http.middlewares.nextcloud_redirect1.redirectregex.regex=https://(.*)/.well-known/webfinger
-      - traefik.http.middlewares.nextcloud_redirect1.redirectregex.replacement=https://$${1}/.well-known/webfinger
-      - traefik.http.middlewares.nextcloud_redirect2.redirectregex.regex=https://(.*)/.well-known/nodeinfo
-      - traefik.http.middlewares.nextcloud_redirect2.redirectregex.replacement=https://$${1}/.well-known/nodeinfo
 
   cron:
     container_name: nextcloud.cronjobs
@@ -65,44 +43,28 @@ services:
       - /nextcloud-data:/data:rw
       - /usr/bin/python3/:/python3/
     entrypoint: /cron.sh
-    networks:
-      - nextcloud
-    depends_on:
-      - nextcloud
 
-  # phpmyadmin:
-  #     image: phpmyadmin/phpmyadmin
-  #     container_name: nextcloud.phpmyadmin
-  #     #link to the mariadb database. This is required for a connection
-  #     links:
-  #       - mariadb
-  #     environment:
-  #       PMA_HOST: ${PMA_HOST}
-  #       PMA_PORT: ${PMA_PORT}
-  #     restart: unless-stopped
-  #     depends_on:
-  #       - mariadb
-  #     networks:
-  #       - nextcloud
-  #       - web-secure
-  #     labels:
-  #       # enable traefik labels
-  #       - "traefik.enable=true"
+  phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     container_name: nextcloud.phpmyadmin
+#    network_mode: host
+     environment:
+       PMA_HOST: ${PMA_HOST}
+       PMA_PORT: ${PMA_PORT}
+       UPLOAD_LIMIT: 200000000
+     restart: unless-stopped
 
-  #       - "traefik.http.routers.phpmyadmindev.rule=Host(`nextclouddb.apex-migrations.net`)"
-  #       - "traefik.http.routers.phpmyadmindev.entrypoints=web-secure"
-  #       - "traefik.http.routers.phpmyadmindev.tls.certresolver=production"
-  #       - "traefik.http.routers.phpmyadmindev.tls=true"
-  #       - "traefik.http.services.phpmyadmindev.loadbalancer.server.port=80" #port to the webservice
-
-  #       - "traefik.http.routers.phpmyadmindev.middlewares=real-ip-foo@file, authelia-secure@docker"
-
-networks:
-  web-secure:
-    external: true
-  nextcloud:
-    external: true
-  monitoring-stack:
-    external: true
   redis:
-    external: true
+    image: redis:latest
+    container_name: nextcloud.redis
+    hostname: nextcloud.redis
+    network_mode: host
+    command: "redis-server --requirepass ${REDIS_HOST_PASSWORD}"
+    volumes:
+      - ./redis-data:/data
+    restart: unless-stopped
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+## to enter the nextcloud occ, use the following command:
+# sudo docker exec -it --user www-data nextcloud.ui php occ
