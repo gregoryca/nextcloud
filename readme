@@ -36,3 +36,9 @@ More info can be found here: https://linuxhint.com/ubuntu-add-user-to-group/
 
 When receiving the error message: "configuration was not read or initialized correctly"
 Use the following site to troubleshoot the issue: https://help.nextcloud.com/t/configuration-was-not-read-or-initialized-correctly/152414/3
+
+## to enter the nextcloud occ, use the following command:
+# sudo docker exec -it --user www-data nextcloud.ui php occ
+
+## MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. 
+Fix: https://github.com/nextcloud/documentation/issues/513
