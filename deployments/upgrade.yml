@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: all
   gather_facts: False
   tasks:
 
@@ -25,13 +25,13 @@
   #Pull latest version Image
     - name: pull an image
       docker_image:
-        name: nextcloud:28.0.3
+        name: nextcloud:latest
         source: pull
 
-  #deploy compose file
-    - name: deploy Docker Compose stack
-      docker_compose:
-        project_src: ~/srv/nextcloud/
-        build: no
-        restarted: yes
-      register: output
+  # #deploy compose file
+  #   - name: deploy Docker Compose stack
+  #     docker_compose:
+  #       project_src: ~/srv/nextcloud/
+  #       build: no
+  #       restarted: yes
+  #     register: output
