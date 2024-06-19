@@ -11,3 +11,4 @@ redis/dump.rdb
 .terraform/providers/registry.terraform.io/aequitas/transip/0.1.22/linux_amd64/terraform-provider-transip_v0.1.22
 provider.tf
 .terraform.lock.hcl
+redis-data/dump.rdb
