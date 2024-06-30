@@ -35,17 +35,17 @@ services:
     volumes:
       - ./data/mariadb:/var/lib/mysql
 
-  nextcloud-appapi-dsp:
-    environment:
-        - NC_HAPROXY_PASSWORD=some_secure_password
-    volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-    container_name: nextcloud-appapi-dsp
-    hostname: nextcloud-appapi-dsp
-    restart: unless-stopped
-    privileged: true
-    image: ghcr.io/cloud-py-api/nextcloud-appapi-dsp:release
-    network_mode: host
+  # nextcloud-appapi-dsp:
+  #   environment:
+  #       - NC_HAPROXY_PASSWORD=some_secure_password
+  #   volumes:
+  #       - /var/run/docker.sock:/var/run/docker.sock:ro
+  #   container_name: nextcloud-appapi-dsp
+  #   hostname: nextcloud-appapi-dsp
+  #   restart: unless-stopped
+  #   privileged: true
+  #   image: ghcr.io/cloud-py-api/nextcloud-appapi-dsp:release
+  #   network_mode: host
 
   cron:
     container_name: nextcloud.cronjobs
@@ -58,15 +58,15 @@ services:
     entrypoint: /cron.sh
     network_mode: host
 
-  phpmyadmin:
-     image: phpmyadmin/phpmyadmin
-     container_name: nextcloud.phpmyadmin
-#    network_mode: host
-     environment:
-       PMA_HOST: ${PMA_HOST}
-       PMA_PORT: ${PMA_PORT}
-       UPLOAD_LIMIT: 200000000
-     restart: unless-stopped
+#   phpmyadmin:
+#      image: phpmyadmin/phpmyadmin
+#      container_name: nextcloud.phpmyadmin
+# #    network_mode: host
+#      environment:
+#        PMA_HOST: ${PMA_HOST}
+#        PMA_PORT: ${PMA_PORT}
+#        UPLOAD_LIMIT: 200000000
+#      restart: unless-stopped
 
   redis:
     image: redis:latest
