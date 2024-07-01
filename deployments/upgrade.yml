@@ -1,19 +1,19 @@
 ---
-- hosts: all
+- hosts: localhost
   gather_facts: False
   tasks:
 
   #Stopping container
     - name: Stop the docker container
       docker_container:
-        name: nextcloud
+        name: nextcloud.ui
         image: nextcloud
         state: stopped
 
   #Removing/Deleting container
     - name: Remove container
       docker_container:
-        name: nextcloud
+        name: nextcloud.ui
         state: absent
 
   #Removing/Deleting Image
@@ -28,10 +28,10 @@
         name: nextcloud:latest
         source: pull
 
-  # #deploy compose file
-  #   - name: deploy Docker Compose stack
-  #     docker_compose:
-  #       project_src: ~/srv/nextcloud/
-  #       build: no
-  #       restarted: yes
-  #     register: output
+  #deploy compose file
+    - name: deploy Docker Compose stack
+      docker_compose:
+        project_src: ~/srv/nextcloud/
+        build: no
+        restarted: yes
+      register: output
