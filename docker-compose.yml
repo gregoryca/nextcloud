@@ -6,13 +6,12 @@ services:
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-      MARIADB_USER: ${MARIADB_USER}
-      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: 'insertusername'
+      MARIADB_DATABASE: 'insertdbname'
     volumes:
       - ./data/mariadb:/var/lib/mysql
     networks:
       - nextcloud
-      - monitoring-stack
 
   nextcloud:
     image: nextcloud:latest
@@ -28,22 +27,16 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - REDIS_HOST=192.168.2.100
-      - REDIS_PORT=6379
-      - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD}
     networks:
       - web-secure
       - nextcloud
-      - redis
-    dns:
-      - ${DNS_SERVER}
     depends_on:
       - mariadb
     labels:
       - "traefik.enable=true"
       # web interface
-      - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://cloud.apex-migrations.net
-      - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' cloud.apex-migrations.net *.cloud.apex-migrations.net
+      - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://insert.domainname.com
+      - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' insert.domainname.com *.insert.domainname.com
       - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
       - traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true
       - traefik.http.middlewares.nextcloud.headers.stsPreload=true
@@ -101,8 +94,4 @@ networks:
   web-secure:
     external: true
   nextcloud:
-    external: true
-  monitoring-stack:
-    external: true
-  redis:
     external: true
