@@ -1,30 +1,33 @@
+## Ansible Setup
 create a ansible.cfg in: /deployments/
 The contents of the ansible.cfg are as following:
 
-[defaults]
-
-inventory = inventory
-
-host_key_checking = true
+    [defaults]
+    inventory = inventory
+    host_key_checking = true
 
 Next you'll need a inventory file so ansible knows how to connect to your infra for proivisioning.
 The contents of the inventory file are as follow:
 
-[name group]
-server name ansible_host=ipaddress ansible_port=port
+    [name group]
+    server name ansible_host=ipaddress ansible_port=port
 
-[group name:vars]
+    [group name:vars]
 
-What also is important is to create a .env file in the root directory of your docker-compose file, and add the missing details in the .env file.
-more details follow soon !
+## Config
+What's also important is to create a .env file in the root directory of your docker-compose file, and add the missing details in the .env file.
+Create a .env file with the following details:
+    MYSQL_ROOT_PASSWORD=
+    MYSQL_PASSWORD=
+    MYSQL_DATABASE=
+    MYSQL_USER=
+    MYSQL_HOST=
+    REDIS_HOST_PASSWORD=
+    REDIS_HOST_PASSWORD=
 
-Ignore this readme, still needs to updated to reflect the official nextcloud docker image instead of: Linuxserver.io
+Make sure to fill in the "value" of the keys
 
-Make sure you define a config.php file for nextcloud like so: https://help.nextcloud.com/uploads/default/original/2X/9/9d28662b6e5090c46a48e034b66f214904738e6b.png
-
-If the necessary secrets are defined, you could also do a Ansible deployment of the Nextcloud Docker stack.
-
-#Error messages
+## Error messages
 When you receive the following error:
 {"changed": false, "msg": "Error connecting: Error while fetching server API version: ('Connection aborted.', PermissionError(13, 'Permission denied'))"}
 
@@ -37,14 +40,13 @@ More info can be found here: https://linuxhint.com/ubuntu-add-user-to-group/
 When receiving the error message: "configuration was not read or initialized correctly"
 Use the following site to troubleshoot the issue: https://help.nextcloud.com/t/configuration-was-not-read-or-initialized-correctly/152414/3
 
-## to enter the nextcloud occ, use the following command:
-sudo docker exec -it --user www-data nextcloud.ui php occ
+## Docker commands
+to enter the nextcloud occ, use the following command:
+    sudo docker exec -it --user www-data nextcloud.ui php occ
 
-## MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. 
+MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. 
 Fix: https://github.com/nextcloud/documentation/issues/513
 
-## to enter the nextcloud occ, use the following command:
-sudo docker exec -it --user www-data nextcloud php occ
-
-## To backup files use the following command:
+## Back-up MySQL DB
+To backup files use the following command:
 mysqldump --single-transaction -h 192.168.2.116 -u nextcloud -plaliloe nextcloud_db > nextcloud-sqlbkp_`date +"%Y%m%d"`.bak
