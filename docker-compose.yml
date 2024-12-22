@@ -89,10 +89,3 @@ services:
   #   privileged: true
   #   image: ghcr.io/cloud-py-api/nextcloud-appapi-dsp:release
   #   network_mode: host
-
-## to enter the nextcloud occ, use the following command:
-# sudo docker exec -it --user www-data nextcloud.ui php occ
-
-
-## To backup files use the following command:
-# mysqldump --single-transaction -h 192.168.2.116 -u nextcloud -plaliloe nextcloud_db > nextcloud-sqlbkp_`date +"%Y%m%d"`.bak

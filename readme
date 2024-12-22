@@ -42,3 +42,9 @@ sudo docker exec -it --user www-data nextcloud.ui php occ
 
 ## MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. 
 Fix: https://github.com/nextcloud/documentation/issues/513
+
+## to enter the nextcloud occ, use the following command:
+sudo docker exec -it --user www-data nextcloud php occ
+
+## To backup files use the following command:
+mysqldump --single-transaction -h 192.168.2.116 -u nextcloud -plaliloe nextcloud_db > nextcloud-sqlbkp_`date +"%Y%m%d"`.bak
