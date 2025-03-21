@@ -3,35 +3,21 @@
   gather_facts: False
   tasks:
 
-  #Stopping container
-    - name: Stop the docker container
-      docker_container:
-        name: nextcloud.ui
-        image: nextcloud
-        state: stopped
-
-  #Removing/Deleting container
-    - name: Remove container
-      docker_container:
-        name: nextcloud.ui
+    - name: stop and remove docker compose services
+      community.docker.docker_compose_v2:
+        project_src: ~/srv/nextcloud-proxmox-vm
         state: absent
 
-  #Removing/Deleting Image
-    - name: Remove image
+    - name: Remove image pihole image
       docker_image:
-        name: nextcloud:stable, nextcloud:latest
+        name: nextcloud:latest
         state: absent
 
-  #Pull latest version Image
-    - name: pull an image
+    - name: pull latest version
       docker_image:
         name: nextcloud:latest
         source: pull
 
-  #deploy compose file
-    - name: deploy Docker Compose stack
-      docker_compose:
-        project_src: ~/srv/nextcloud/
-        build: no
-        restarted: yes
-      register: output
+    - name: create and start docker compose services
+      community.docker.docker_compose_v2:
+        project_src: ~/srv/nextcloud-proxmox-vm
