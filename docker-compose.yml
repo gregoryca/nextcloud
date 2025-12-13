@@ -1,57 +1,74 @@
 services:
   nextcloud:
-    image: nextcloud:latest
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+    image: nextcloud:32.0.2
     container_name: nextcloud
-    hostname: nextcloud
-    network_mode: host
     restart: unless-stopped
     volumes:
-      - /nextcloud-data:/data
+      - /nextcloud-data/nextcloud-data:/var/www/html/data
       - ./nextcloud-app/:/var/www/html
       - ./nextcloud-log:/var/log/
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./opcache-recommed.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
+      - ./geoip_db:/var/lib/GeoIP/
+      - ./nextcloudworkers.conf:/etc/apache2/conf-enabled/nextcloudworkers.conf
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Europe/Amsterdam
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_HOST=${MYSQL_HOST}
+      - PHP_MEMORY_LIMIT=1024M
+    networks:
+      - web-secure
+    ports:
+      - 80:80
+    links:
+      - mariadb
 
   mariadb:
     container_name: nextcloud.mariadb
     image: mariadb:10.6
-    hostname: db
     restart: always
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
-    network_mode: host
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
     volumes:
-      - ./data/:/var/lib/mysql:rw
+      - ./mysql-data/:/var/lib/mysql:rw
+    ports:
+      - 3306:3306
+    networks:
+      - web-secure
 
-  cron:
-    container_name: nextcloud.cronjobs
-    image: nextcloud:apache
-    hostname: cron
-    restart: always
-    volumes:
-      - ./nextcloud-app/:/var/www/html:rw
-      - /nextcloud-data:/data:rw
-      - /usr/bin/python3/:/python3/
-    entrypoint: /cron.sh
-    network_mode: host
-
+  phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     container_name: nextcloud.phpmyadmin
+     environment:
+       PMA_HOST: ${MYSQL_HOST}
+       PMA_PORT: 3306
+       UPLOAD_LIMIT: 200000000
+     restart: unless-stopped
+     ports: 
+      - 8080:80
+     networks:
+      - web-secure
+     links:
+      - mariadb
+      
   redis:
     image: redis:latest
     container_name: nextcloud.redis
     hostname: redis
-    network_mode: host
+    networks:
+      - web-secure
     command: "redis-server --save 60 1000"
     volumes:
       - ./redis-data:/data
@@ -59,33 +76,34 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=master
 
-  # collabora:
-  #   container_name: nextcloud.collabora
-  #   image: collabora/code:latest
-  #   tty: true
-  #   network_mode: host
-  #   restart: unless-stopped
+  collabora:
+    container_name: nextcloud.collabora
+    image: collabora/code:25.04.7.3.1
+    tty: true
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - extra_params=--o:ssl.enable=false --o:ssl.termination=true
+      - username=gregory
+      - domain=cloud
 
-  phpmyadmin:
-     image: phpmyadmin/phpmyadmin
-     container_name: nextcloud.phpmyadmin
-     hostname: db
-     environment:
-       PMA_HOST: nextcloud
-       PMA_PORT: 3306
-       UPLOAD_LIMIT: 200000000
-     restart: unless-stopped
-     ports: 
-      - 8080:80
-
-  # nextcloud-appapi-dsp:
+  # nextcloud-appapi-harp:
   #   environment:
-  #       - NC_HAPROXY_PASSWORD=some_secure_password
+  #     - HP_SHARED_KEY=${HP_SHARED_KEY}
+  #     - NC_INSTANCE_URL=https://cloud.apex-migrations.net
+  #     - HP_EXAPPS_ADDRESS=localhost:8780
   #   volumes:
-  #       - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   container_name: nextcloud-appapi-dsp
-  #   hostname: nextcloud-appapi-dsp
+  #       - /var/run/docker.sock:/var/run/docker.sock
+  #       - /certs:/certs
+  #   container_name: appapi-harp
+  #   hostname: appapi-harp
   #   restart: unless-stopped
-  #   privileged: true
-  #   image: ghcr.io/cloud-py-api/nextcloud-appapi-dsp:release
-  #   network_mode: host
+  #   networks:
+  #     - web-secure
+  #   ports:
+  #     - 8780:8780
+  #   image: ghcr.io/nextcloud/nextcloud-appapi-harp:release
+
+networks:
+  web-secure:
+    external: true
