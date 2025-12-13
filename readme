@@ -42,11 +42,36 @@ Use the following site to troubleshoot the issue: https://help.nextcloud.com/t/c
 
 ## Docker commands
 to enter the nextcloud occ, use the following command:
-    sudo docker exec -it --user www-data nextcloud.ui php occ
+    sudo docker exec -it --user www-data nextcloud php occ
 
 MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. 
 Fix: https://github.com/nextcloud/documentation/issues/513
 
 ## Back-up MySQL DB
 To backup files use the following command:
-mysqldump --single-transaction -h 192.168.2.116 -u nextcloud -plaliloe nextcloud_db > nextcloud-sqlbkp_`date +"%Y%m%d"`.bak
+mysqldump --single-transaction -h 192.168.2.116 -u nextcloud -p laliloe nextcloud_db > nextcloud-sqlbkp_`date +"%Y%m%d"`.bak
+
+## Change folder Permissions
+To change the folder permission, run the following command:
+chown -R www-data:www-data /path/to/nextcloud-data-folder
+
+## Change folder Rights
+sudo chmod -R 0770 /nextcloud-data/
+
+## Add properties to NTFS mount
+To add the right properties to an NTFS mounted drive, use the following site: https://help.nextcloud.com/t/you-dont-have-permissions-to-upload-or-create-files-here-local-external-ntfs-3g-storage/5420/3?u=fab
+
+### Proxmox/Nextcloud volume mount configuration
+Start by searching for the drive that needs to be mapped:
+    ls /dev/disk/by-id/
+    
+Then proceed to creating a new volume mount attached to the vm, on the proxmox host:
+    qm set 100 -scsi1 /dev/disk/by-id/ata-TOSHIBA_MK3259GSXP_62QOCSJZT
+
+Then edit the "/etc/fstab" to enter a new volume mount:
+    #Nextcloud data folder
+    UUID=1ADEEC51DEEC272B /nextcloud-mount ntfs rw,auto,users,exec,nls=utf8,umask=003,gid=33,uid=33   0   0
+
+Then do a 'systemctl daemon-reload', followed by a 'mount -a'
+
+The drive will be mounted as a scsi drive, and should be available directly on the VM exlusively for the VM.
