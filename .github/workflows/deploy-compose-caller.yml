@@ -1,0 +1,31 @@
+name: Deploy Compose (manual caller)
+
+on:
+  workflow_dispatch:
+    inputs:
+      DOCKER_STACK_NAME:
+        description: Stack name override for both deployment hosts.
+        required: true
+        type: string
+      DOCKER_COMPOSE_FILE:
+        description: Compose file override, relative to each stack path.
+        required: true
+        type: string
+      DOCKER_STACK_PATH:
+        description: Absolute stack directory override for both hosts.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    uses: gregoryca/apex-migrations-framework/.github/workflows/deploy-compose.yml@main
+    with:
+      DOCKER_STACK_NAME: ${{ inputs.DOCKER_STACK_NAME }}
+      DOCKER_COMPOSE_FILE: ${{ inputs.DOCKER_COMPOSE_FILE }}
+      DOCKER_STACK_PATH: ${{ inputs.DOCKER_STACK_PATH }}
+    secrets:
+      ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+      TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
