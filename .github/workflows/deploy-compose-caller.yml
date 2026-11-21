@@ -3,8 +3,13 @@ name: Deploy Compose (manual caller)
 on:
   workflow_dispatch:
     inputs:
+      DEPLOY_HOST:
+        description: Optional target hostname (devops.headscale.node or nextcloud.headscale.node); leave blank for both.
+        required: false
+        type: string
+        default: ""
       DOCKER_STACK_NAME:
-        description: Stack name override for both deployment hosts.
+        description: Stack name override for selected host(s).
         required: true
         type: string
       DOCKER_COMPOSE_FILE:
@@ -23,6 +28,7 @@ jobs:
   deploy:
     uses: gregoryca/apex-migrations-framework/.github/workflows/deploy-compose.yml@main
     with:
+      DEPLOY_HOST: ${{ inputs.DEPLOY_HOST }}
       DOCKER_STACK_NAME: ${{ inputs.DOCKER_STACK_NAME }}
       DOCKER_COMPOSE_FILE: ${{ inputs.DOCKER_COMPOSE_FILE }}
       DOCKER_STACK_PATH: ${{ inputs.DOCKER_STACK_PATH }}
