@@ -1,4 +1,4 @@
-name: Deploy Compose (manual caller)
+name: Deploy Compose file for Nextcloud
 
 on:
   workflow_dispatch:
@@ -20,6 +20,12 @@ on:
         description: Absolute stack directory override for both hosts.
         required: true
         type: string
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
