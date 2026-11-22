@@ -1,3 +1,20 @@
+variable "transip_account_name" {
+  type        = string
+  description = "The name of the Transip account"
+}
+
+variable "transip_private_key" {
+  type        = string
+  description = "The private key for the Transip account"
+  sensitive   = true
+}
+
+variable "transip_access_token" {
+  type        = string
+  description = "The access token for the Transip account"
+  sensitive   = true
+}
+
 ####### Network
 variable "nextcloud" {
   type        = string

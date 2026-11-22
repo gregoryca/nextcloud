@@ -1,15 +1,3 @@
-# terraform {
-#   required_providers {
-#     transip = {
-#       source  = "aequitas/transip"
-#       version = "0.1.22"
-#     }
-#   }
-
-#   backend "http" {
-#   }
-# }
-
 data "transip_domain" "apex-migrations" {
   name = "apex-migrations.net"
 }

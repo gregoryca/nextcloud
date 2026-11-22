@@ -12,3 +12,11 @@ redis/dump.rdb
 provider.tf
 .terraform.lock.hcl
 redis-data/dump.rdb
+.terraform/providers/registry.terraform.io/aequitas/transip/0.1.22/linux_arm64/terraform-provider-transip_v0.1.22
+nextcloud.tfvars
+terraform.tfstate.backup
+terraform.tfstate
+.terraform.tfstate.lock.info
+plan
+.terraform/providers/registry.terraform.io/aequitas/transip/0.1.27/linux_arm64/terraform-provider-transip_v0.1.27
+.terraform/providers/registry.terraform.io/hashicorp/null/3.3.2/linux_arm64/terraform-provider-null_v3.3.2_x5
