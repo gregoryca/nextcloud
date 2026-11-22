@@ -7,7 +7,7 @@ on:
         description: Optional target hostname (devops.headscale.node or nextcloud.headscale.node); leave blank for both.
         required: false
         type: string
-        default: ""
+        default: "nextcloud.headscale.node"
       DOCKER_STACK_NAME:
         description: Stack name override for selected host(s).
         required: true
