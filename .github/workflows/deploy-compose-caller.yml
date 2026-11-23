@@ -8,21 +8,21 @@ on:
         required: false
         type: string
         default: "nextcloud.headscale.node"
-      DOCKER_STACK_NAME:
+      compose_deploy_docker_stack_name:
         description: Stack name override for selected host(s).
         required: true
         type: string
         default: nextcloud
-      DOCKER_COMPOSE_FILE:
+      compose_deploy_docker_compose_file:
         description: Compose file override, relative to each stack path.
         required: true
         type: string
         default: docker-compose.yml
-      DOCKER_STACK_PATH:
-        description: Absolute stack directory override for both hosts.
-        required: true
+      deploy_user:
+        description: User to connect to the hosts.
+        required: false
         type: string
-        default: ""
+        default: "gregory"
   push:
     branches:
       - main
