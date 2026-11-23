@@ -12,14 +12,17 @@ on:
         description: Stack name override for selected host(s).
         required: true
         type: string
+        default: nextcloud
       DOCKER_COMPOSE_FILE:
         description: Compose file override, relative to each stack path.
         required: true
         type: string
+        default: docker-compose.yml
       DOCKER_STACK_PATH:
         description: Absolute stack directory override for both hosts.
         required: true
         type: string
+        default: ""
   push:
     branches:
       - main
