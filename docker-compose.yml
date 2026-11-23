@@ -3,7 +3,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 6G
+          memory: 2G
     image: nextcloud:32.0.2
     container_name: nextcloud
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_HOST=${MYSQL_HOST}
-      - PHP_MEMORY_LIMIT=1024M
+      - PHP_MEMORY_LIMIT=384M
     networks:
       - web-secure
     ports:
